@@ -1,10 +1,11 @@
 import io.appium.java_client.android.AndroidDriver;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebElement;
 import pages.CalculatorPage;
-import utils.AppiumDriverFactory;
-
-import java.net.MalformedURLException;
+import utils.MobileFactory;
 
 public class Tests {
     
@@ -12,25 +13,27 @@ public class Tests {
     private CalculatorPage calculatorPage;
     
     @BeforeEach
-    public void setup() throws MalformedURLException {
-        driver = AppiumDriverFactory.createDriver();
-        calculatorPage = CalculatorPage.getInstance(driver);
+    public void setUp() {
+        driver = MobileFactory.getAndroidDriver();
+        calculatorPage = new CalculatorPage(driver);
     }
+    
     @AfterEach
     public void teardown() {
         if (driver != null) {
             driver.quit();
         }
     }
+    
     @Test
     public void testCalculatorAddition() {
         calculatorPage.pressDigit(2);
         calculatorPage.pressOperator("add");
         calculatorPage.pressDigit(3);
         calculatorPage.pressEquals();
-
+        
         WebElement result = calculatorPage.getResult();
-
+        
         Assertions.assertEquals("5", result.getText(), "Ожидаемый результат операции: 5");
     }
     
@@ -40,9 +43,9 @@ public class Tests {
         calculatorPage.pressOperator("sub");
         calculatorPage.pressDigit(4);
         calculatorPage.pressEquals();
-
+        
         WebElement result = calculatorPage.getResult();
-
+        
         Assertions.assertEquals("4", result.getText(), "Ожидаемый результат операции: 4");
     }
     
@@ -84,5 +87,4 @@ public class Tests {
         
         Assertions.assertEquals("Can't divide by 0", result.getText(), "Ожидаемый результат операции: Can't divide by 0");
     }
-    
 }

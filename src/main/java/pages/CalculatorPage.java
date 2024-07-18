@@ -5,18 +5,10 @@ import org.openqa.selenium.WebElement;
 
 public class CalculatorPage {
     
-    private static CalculatorPage instance;
     private AndroidDriver driver;
     
-    private CalculatorPage(AndroidDriver driver) {
+    public CalculatorPage(AndroidDriver driver) {
         this.driver = driver;
-    }
-    
-    public static CalculatorPage getInstance(AndroidDriver driver) {
-        if (instance == null) {
-            instance = new CalculatorPage(driver);
-        }
-        return instance;
     }
     
     public void pressDigit(int digitId) {
